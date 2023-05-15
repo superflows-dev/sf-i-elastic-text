@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>&lt;sf-i-elastic-text> Demo</title>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/lit/polyfill-support.js"></script>
+    <script type="module" src="../sf-i-elastic-text.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <script type="module">
+    </script>
+    <style>
+      
+      body {
+        background-color: #efefef;
+        margin: 0px;
+        font-family: 'Source Sans Pro';
+      }
+      
+      sf-i-elastic-text:not(:defined) {
+        display: none;
+      }
+
+      .d-flex {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .w-30 {
+        width: 30%;
+      }
+
+      .w-5 {
+        width: 5%;
+      }
+
+      .w-47-5 {
+        width: 47.5%;
+      }
+
+      .w-65 {
+        width: 65%;
+      }
+
+      .w-100-m-0 {
+        width: 100%;
+      }
+
+      .w-33 {
+        width: 30%;
+      }
+
+      .w-66 {
+        width: 62%;
+      }
+
+      .w-50 {
+        width: 46%;
+      }
+      .w-100 {
+        width: 94%;
+      }
+
+      .justify-center {
+        justify-content: center;
+      }
+
+      .align-end {
+        align-items: flex-end;
+      }
+
+      label {
+        color: #666;
+      }
+
+      input {
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        background: #efefef;
+        box-shadow: inset 2px 2px 6px rgba(5, 5, 5, 0.2);
+        border-top: solid 1px rgba(255, 255, 255, 0.8);
+        border-left: solid 1px rgba(255, 255, 255, 0.8);
+        border-bottom: solid 1px rgba(255, 255, 255, 0.8);
+        border-right: solid 1px rgba(255, 255, 255, 0.8);
+        transition: 0.3s;
+      }
+     
+      input:focus {
+        outline-color: #e8e8e8;
+        background: #e8e8e8;
+        box-shadow: inset 20px 20px 60px #c5c5c5,
+          inset -20px -20px 60px #ffffff;
+        transition: 0.3s;
+      }
+
+      sf-i-elastic-text::part(button-icon) {
+
+        border-width: 0px;      
+        border-radius: 5px;
+        color: #666;
+        background: #efefef;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        
+      }
+
+      sf-i-elastic-text::part(button-icon-small) {
+
+        border-width: 0px;      
+        border-radius: 5px;
+        color: #666;
+        background: #efefef;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+
+      }
+
+      sf-i-elastic-text::part(badge) {
+
+        color: #666;
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        margin-top: -8px;
+
+      }
+
+      sf-i-elastic-text::part(title) {
+
+        font-weight: 400;
+
+      }
+
+      sf-i-select::part(input-label),
+      sf-i-sub-select::part(input-label),
+      sf-i-elastic-text::part(input-label) {
+        color: #666;
+      }
+
+      sf-i-select::part(input-select),
+      sf-i-sub-select::part(input-select),
+      sf-i-elastic-text::part(input-select) {
+
+        border-width: 0px;      
+        border-radius: 5px;
+        color: #666;
+        background: #efefef;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+
+      }
+
+      sf-i-select::part(input-select-multi),
+      sf-i-sub-select::part(input-select-multi) {
+        font-weight: 400;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        background: #efefef;
+        box-shadow: inset 2px 2px 6px rgba(5, 5, 5, 0.2);
+        border-top: solid 1px rgba(255, 255, 255, 0.8);
+        border-left: solid 1px rgba(255, 255, 255, 0.8);
+        border-bottom: solid 1px rgba(255, 255, 255, 0.8);
+        border-right: solid 1px rgba(255, 255, 255, 0.8);
+        transition: 0.3s;
+      }
+
+      sf-i-elastic-text::part(input) {
+        font-weight: 400;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        background: #efefef;
+        box-shadow: inset 2px 2px 6px rgba(5, 5, 5, 0.2);
+        border-top: solid 1px rgba(255, 255, 255, 0.8);
+        border-left: solid 1px rgba(255, 255, 255, 0.8);
+        border-bottom: solid 1px rgba(255, 255, 255, 0.8);
+        border-right: solid 1px rgba(255, 255, 255, 0.8);
+        transition: 0.3s;
+      }
+     
+      sf-i-elastic-text::part(input:focus) {
+        outline-color: #e8e8e8;
+        background: #e8e8e8;
+        box-shadow: inset 20px 20px 60px #c5c5c5,
+          inset -20px -20px 60px #ffffff;
+        transition: 0.3s;
+      }
+
+      sf-i-elastic-text::part(results-title) {
+        color: #444;
+        font-weight: 400;
+      }
+      
+      sf-i-elastic-text::part(td-head) {
+        color: #888;
+        font-weight: 400;
+        padding: 5px;
+        vertical-align: middle;
+      }
+
+      sf-i-elastic-text::part(td-body) {
+        color: #555;
+        font-weight: 400;
+        padding: 5px;
+        vertical-align: middle;
+      }
+
+      sf-i-elastic-text::part(td-action) {
+        color: #888;
+        font-weight: 400;
+        padding: 5px;
+        background-color: #efefef;
+        vertical-align: middle;
+      }
+
+      sf-i-elastic-text::part(button) {
+        color: #666;
+        background: #efefef;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 5px;
+      }
+
+      
+
+      sf-i-elastic-text::part(button-lg) {
+        color: #666;
+        background: #efefef;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+        font-size: 110%;
+      }
+
+      sf-i-elastic-text::part(button-lg):not(active){
+        color: #666;
+        background: #bbbbbb;
+        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.25), -1px -1px 10px 0 rgba(255, 255, 255, 0.6);
+        border-top: solid 1px rgba(255, 255, 255, 0.3);
+        border-left: solid 1px rgba(255, 255, 255, 0.3);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+        border-right: solid 1px rgba(0, 0, 0, 0.1);
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-radius: 5px;
+        font-size: 95%;
+      }
+
+
+    </style>
+  </head>
+  <body>
+     
+    <!-- <sf-i-elastic-text text="Vendor Tagging Vendor Tagging Vendor Tagging Vendor Tagging" minLength="20">
+    </sf-i-elastic-text> -->
+    <sf-i-elastic-text text="Vendor" minLength="20">
+    </sf-i-elastic-text>
+    
+    <script>
+    </script>
+  </body>
+</html>

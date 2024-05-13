@@ -287,17 +287,17 @@ export class SfIElasticText extends LitElement {
   renderNext = () => {
     
     if(this.text.length <= this.minLength) {
-      (this._SfDivText as HTMLDivElement).innerHTML = this.text;
+      (this._SfDivText as HTMLDivElement).innerHTML = this.escapeHtml(this.text);
       (this._SfButtonNext as HTMLElement).style.display = 'none';
     } else {
-      var text = this.truncate(this.text, this.minLength, true);
+      var text = this.truncate(this.escapeHtml(this.text), this.minLength, true);
       (this._SfDivText as HTMLDivElement).innerHTML = text;
     }
     
   }
 
   renderPrev = () => {
-    var text = this.text;
+    var text = this.escapeHtml(this.text);
     (this._SfDivText as HTMLDivElement).innerHTML = text;
   }
 
@@ -334,6 +334,16 @@ export class SfIElasticText extends LitElement {
   override connectedCallback() {
     super.connectedCallback()
   }
+
+  escapeHtml(str: String)
+  {
+    return str
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
   
   override render() {
 
@@ -341,7 +351,7 @@ export class SfIElasticText extends LitElement {
           
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <div part="text-container" class="SfIElasticTextC d-flex align-center">
-        <div id="div-text" part="text-view">${this.text}</div>
+        <div id="div-text" part="text-view">${this.escapeHtml(this.text)}</div>
         <span part="text-next" id="button-next" class="material-icons cursor color-lt-gray">chevron_right</span>
         <span part="text-prev" id="button-prev" class="material-icons cursor color-lt-gray">chevron_left</span>
       </div>

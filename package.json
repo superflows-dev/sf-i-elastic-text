@@ -1,7 +1,7 @@
 {
   "name": "sf-i-elastic-text",
   "private": false,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Superflows Expandable Text Component",
   "main": "sf-i-elastic-text.js",
   "module": "sf-i-elastic-text.js",

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-import {LitElement, html, css, PropertyValueMap} from 'lit';
+import { LitElement, html, css, PropertyValueMap } from 'lit';
 // import {customElement, query, queryAssignedElements, property} from 'lit/decorators.js';
-import {customElement, query, property} from 'lit/decorators.js';
+import { customElement, query, property } from 'lit/decorators.js';
 // import {customElement, query, property} from 'lit/decorators.js';
-// import Util from './util';
+import Util from './util';
 // import {LitElement, html, css} from 'lit';
 // import {customElement} from 'lit/decorators.js';
 
@@ -33,12 +33,19 @@ DB: partitionKey, rangeKey, values
  */
 @customElement('sf-i-elastic-text')
 export class SfIElasticText extends LitElement {
-  
+
   @property()
   text!: string;
 
   @property()
+  highlight: string = "";
+
+  @property()
   minLength!: number;
+
+  @property()
+  lineSize: number = 0;
+
 
   static override styles = css`
 
@@ -79,6 +86,7 @@ export class SfIElasticText extends LitElement {
       top: 10px;
       margin-left: 5px;
     }
+
 
     .td-head {
       text-transform: capitalize;
@@ -197,6 +205,19 @@ export class SfIElasticText extends LitElement {
       text-align: center;
     }
 
+    #button-next {
+      font-size: 110%;
+      margin-bottom: 4px;
+    }
+
+
+    #button-prev {
+      font-size: 100%;
+      margin-left: 3px;
+      margin-bottom: 4px;
+    }
+
+
     .d-flex {
       display: flex;
     }
@@ -262,15 +283,18 @@ export class SfIElasticText extends LitElement {
   @query('#div-text')
   _SfDivText: any;
 
+  @query('#div-highlight-count')
+  _SfDivHighlightCount: any;
+
   constructor() {
     super();
   }
 
-  truncate = ( str: string, n: number, useWordBoundary: boolean ) => {
+  truncate = (str: string, n: number, useWordBoundary: boolean) => {
     if (str.length <= n) { return str; }
-    const subString = str.slice(0, n-1); // the original check
-    return (useWordBoundary 
-      ? subString.slice(0, subString.lastIndexOf(" ")) 
+    const subString = str.slice(0, n - 1); // the original check
+    return (useWordBoundary
+      ? subString.slice(0, subString.lastIndexOf(" "))
       : subString) + "&hellip;";
   };
 
@@ -283,32 +307,92 @@ export class SfIElasticText extends LitElement {
     (this._SfButtonNext as HTMLElement).style.display = 'none';
     (this._SfButtonPrev as HTMLElement).style.display = 'block';
   }
+  
+  showMatches = () => {
+    if(this.highlight != ""){
+      const regex = new RegExp(`(${Util.escapeRegExp(this.highlight)})`, 'gi');
+      const matches = this.text.match(regex)
+      if(matches != null){
+        (this._SfDivHighlightCount as HTMLDivElement).style.display = 'block';
+        (this._SfDivHighlightCount as HTMLDivElement).innerHTML = `${matches.length} instance(s)`;
+        return;
+      }
+    }
+    (this._SfDivHighlightCount as HTMLDivElement).style.display = 'none';
+  }
+
+  getInnerHTMLFromText = (text: string) => {
+
+    if (this.lineSize > 0) {
+
+      const strArr = text.split(' ');
+      var innerHTML = ''
+      for (var i = 0; i < strArr.length; i++) {
+
+        if (this.highlight != "") {
+          const regex = new RegExp(`(${Util.escapeRegExp(this.highlight)})`, 'gi');
+          console.log('highlight', this.highlight, strArr[i]);
+          innerHTML += strArr[i].replace(regex, '<span part="highlight">$1</span>')
+        } else {
+          innerHTML += strArr[i];
+        }
+        if (i < (strArr.length - 1)) {
+          innerHTML += ' ';
+        }
+
+        // console.log('percent', i%this.lineSize);
+
+        if ((i + 1) % this.lineSize === 0) {
+          innerHTML += '<br />';
+        }
+
+      }
+      return innerHTML;
+
+    } else {
+      let innerHTML = ''
+      if (this.highlight != "") {
+        const regex = new RegExp(`(${Util.escapeRegExp(this.highlight)})`, 'gi');
+        console.log('highlight', this.highlight, text);
+        innerHTML += text.replace(regex, '<span part="highlight">$1</span>')
+      } else {
+        innerHTML += text;
+      }
+      return innerHTML;
+    }
+
+
+  }
 
   renderNext = () => {
-    
-    if(this.text.length <= this.minLength) {
-      (this._SfDivText as HTMLDivElement).innerHTML = this.escapeHtml(this.text);
+
+    if (this.text.length <= this.minLength) {
+
+      (this._SfDivText as HTMLDivElement).innerHTML = this.getInnerHTMLFromText(this.text);
       (this._SfButtonNext as HTMLElement).style.display = 'none';
     } else {
-      var text = this.truncate(this.escapeHtml(this.text), this.minLength, true);
-      (this._SfDivText as HTMLDivElement).innerHTML = text;
+
+      var text = this.truncate(this.text, this.minLength, true);
+      (this._SfDivText as HTMLDivElement).innerHTML = this.getInnerHTMLFromText(text);
     }
-    
+
   }
 
   renderPrev = () => {
-    var text = this.escapeHtml(this.text);
-    (this._SfDivText as HTMLDivElement).innerHTML = text;
+    var text = this.text;
+    (this._SfDivText as HTMLDivElement).innerHTML = this.getInnerHTMLFromText(text);
   }
 
   showTruncated = () => {
     this.showNext();
     this.renderNext();
+    this.showMatches();
   }
 
   showExpanded = () => {
     this.showPrev();
     this.renderPrev();
+    this.showMatches();
   }
 
   initListeners = () => {
@@ -330,30 +414,24 @@ export class SfIElasticText extends LitElement {
     this.loadMode();
 
   }
-  
+
   override connectedCallback() {
     super.connectedCallback()
   }
 
-  escapeHtml(str: String)
-  {
-    return str
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
- }
-  
   override render() {
 
     return html`
           
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+      <div part="highlight-container" class="SfIElasticTextC d-flex align-center">
+        <div id="div-highlight-count" part="highlight-count"></div>
+      </div>
       <div part="text-container" class="SfIElasticTextC d-flex align-center">
-        <div id="div-text" part="text-view">${this.escapeHtml(this.text)}</div>
-        <span part="text-next" id="button-next" class="material-icons cursor color-lt-gray">chevron_right</span>
-        <span part="text-prev" id="button-prev" class="material-icons cursor color-lt-gray">chevron_left</span>
+        <div id="div-text" part="text-view">${this.text}</div>
+        <span part="text-next" id="button-next" class="material-symbols-outlined cursor color-lt-gray">expand_circle_right</span>
+        <span part="text-prev" id="button-prev" class="material-symbols-outlined cursor color-lt-gray">arrow_circle_left</span>
       </div>
 
     `;

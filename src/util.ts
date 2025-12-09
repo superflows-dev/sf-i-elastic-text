@@ -1,19 +1,19 @@
 
 const validateName = (name: string) => {
-    if((name + "").length > 2) {
-      return true;
+    if ((name + "").length > 2) {
+        return true;
     }
     return false;
-  }
+}
 
 function readCookie(key: string) {
     let name = key + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) == ' ') {
-        c = c.substring(1);
+            c = c.substring(1);
         }
         if (c.indexOf(name) == 0) {
             return c.substring(name.length, c.length);
@@ -29,16 +29,16 @@ async function callApi(url: string, data: string, authorization: any) {
         const jsonData = JSON.stringify(data);
         var xhr = new XMLHttpRequest();
         xhr.addEventListener("readystatechange", () => {
-            if(xhr != null) {
-                if(xhr.readyState === 4) {
+            if (xhr != null) {
+                if (xhr.readyState === 4) {
                     resolve(xhr);
                 }
             }
         });
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
-        if(authorization != null) {
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        if (authorization != null) {
             xhr.setRequestHeader('Authorization', 'Basic ' + authorization);
         }
         xhr.send(jsonData);
@@ -48,9 +48,12 @@ async function callApi(url: string, data: string, authorization: any) {
     })
 
 }
-
+function escapeRegExp(string:string) {
+    // Escape special characters for use in regex
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 const exportFunctions = {
-   callApi, validateName, readCookie
+    callApi, validateName, readCookie, escapeRegExp
 };
 
 export default exportFunctions;

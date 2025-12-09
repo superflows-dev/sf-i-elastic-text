@@ -147,6 +147,13 @@
         font-weight: 400;
 
       }
+      sf-i-elastic-text::part(highlight) {
+        background-color: greenyellow;
+      }
+      sf-i-elastic-text::part(highlight-count) {
+        color: #666;
+        font-size: small;
+      }
 
       sf-i-select::part(input-label),
       sf-i-sub-select::part(input-label),
@@ -289,10 +296,10 @@
   </head>
   <body>
      
-    <!-- <sf-i-elastic-text text="Vendor Tagging Vendor Tagging Vendor Tagging Vendor Tagging" minLength="20">
-    </sf-i-elastic-text> -->
-    <sf-i-elastic-text text="Vendor" minLength="20">
+    <sf-i-elastic-text text="Vendor Tagging Vendor Tagging Vendor Tagging Vendor Tagging" highlight="vendor" minLength="20">
     </sf-i-elastic-text>
+    <!-- <sf-i-elastic-text text="Vendor" minLength="20">
+    </sf-i-elastic-text> -->
     
     <script>
     </script>

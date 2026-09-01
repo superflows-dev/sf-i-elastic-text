@@ -396,10 +396,12 @@ export class SfIElasticText extends LitElement {
   }
 
   initListeners = () => {
-    (this._SfButtonNext as HTMLButtonElement).addEventListener('click', () => {
+    (this._SfButtonNext as HTMLButtonElement).addEventListener('click', (e) => {
+      e.stopPropagation();
       this.showExpanded();
     });
-    (this._SfButtonPrev as HTMLButtonElement).addEventListener('click', () => {
+    (this._SfButtonPrev as HTMLButtonElement).addEventListener('click', (e) => {
+      e.stopPropagation();
       this.showTruncated();
     });
   }
@@ -430,7 +432,7 @@ export class SfIElasticText extends LitElement {
       </div>
       <div part="text-container" class="SfIElasticTextC d-flex align-center">
         <div id="div-text" part="text-view">${this.text}</div>
-        <span part="text-next" id="button-next" class="material-symbols-outlined cursor color-lt-gray">expand_circle_right</span>
+        <span part="text-next" id="button-next" class="material-symbols-outlined cursor color-lt-gray">arrow_circle_right</span>
         <span part="text-prev" id="button-prev" class="material-symbols-outlined cursor color-lt-gray">arrow_circle_left</span>
       </div>
 
